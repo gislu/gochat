@@ -1,12 +1,12 @@
 package test
 import (
 	"testing"
-	"mts/gateway/models"
+	"gochatserver/models"
 	"encoding/json"
 	"fmt"
 	"time"
 	"encoding/xml"
-	"mts/gateway/utils"
+	"gochatserver/utils"
 	"github.com/astaxie/beego"
 )
 
