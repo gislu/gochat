@@ -1,7 +1,7 @@
 package main
 
 import (
-	_"gochatserver/controllers"
+	_"gochatserver/routers"
 	"github.com/astaxie/beego"
 )
 
