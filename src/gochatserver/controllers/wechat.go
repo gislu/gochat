@@ -21,6 +21,8 @@ type TestController struct  {
 //这里填上在企业号回调模式中设置的AESkey
 const 	key = "R44LRQmvEF45rIxY4pItIKQgD4Lh4DBSWVQJPHbzyMM"
 const token = "zDzEnkKf65gpADnwJF7yCcROu2"
+
+
 //TODO 这里负责回调模式的验证
 func (c * TestController) Get() {
 	signature := models.Signature{}
