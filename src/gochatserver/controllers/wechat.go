@@ -9,10 +9,6 @@ import (
 	"os"
 	"log"
 	"fmt"
-	"encoding/base64"
-	"encoding/binary"
-	"bytes"
-	"errors"
 
 )
 
@@ -29,22 +25,18 @@ const token = "zDzEnkKf65gpADnwJF7yCcROu2"
 func (c * TestController) Get() {
 	signature := models.Signature{}
 	if err := c.ParseForm(&signature) ; err != nil{
-		gutils.Log(err,beego.LevelNotice)
+		Lg(err,beego.LevelNotice)
 		c.Abort("400")
 	}
 
-
+	//de64 := gutils.Base64Dncode(signature.Echostr)
 	newkey := gutils.Base64Dncode(key)
-	aes_msg := gutils.Base64Dncode(signature.Echostr)
-	rand_msg,err := gutils.NormalDecrypt([]byte(aes_msg),[]byte(newkey))
+	//rand_msg,err := gutils.NormalDecrypt(de64,newkey)
+	rand_msg,err := gutils.TestDecrypt(string(signature.Echostr),newkey)
+	if err != nil {
+		Lg(err)
+	}
 
-	if err != nil {
-		Lg(err)
-	}
-	rand_msg,err = gutils.Deallength(rand_msg)
-	if err != nil {
-		Lg(err)
-	}
 	Lg("After Decrypt we get the result:",string(rand_msg))
 	c.Ctx.WriteString(string(rand_msg))
 }
@@ -61,25 +53,23 @@ func (c * TestController) Post() {
 	//err := xml.Unmarshal(c.Ctx.Input.RequestBody,&msgIn)
 	err := xml.Unmarshal(c.Ctx.Input.RequestBody,&msgDecrypt)
 	if err != nil {
-		gutils.Log(err,beego.LevelNotice)
+		Lg(err)
 		c.Abort("400")
 		return
 	}
 
 	//TODO: 微信那边发来的信息是经过AES加密后的BASE64编码，这里进行解密
-	de64:=gutils.Base64Dncode(msgDecrypt.Encrypt)
+
 	//Lg(de64)
+	//de64 :=gutils.Base64Dncode(msgDecrypt.Encrypt)
 	newkey := gutils.Base64Dncode(key)
-	rand_msg,err := gutils.NormalDecrypt([]byte(de64),[]byte(newkey))
+	rand_msg,err := gutils.TestDecrypt(string(msgDecrypt.Encrypt),newkey)
 
 	if err != nil {
 		Lg(err)
 	}
-	rand_msg,err = gutils.Deallength(rand_msg)
-	if err != nil {
-		Lg(err)
-	}
-	//Lg("Get msg!",string(rand_msg))
+
+	Lg("Get msg!",string(rand_msg))
 	err1 :=xml.Unmarshal(rand_msg,&msgIn)
 	if err1 != nil {
 		Lg(err1)
@@ -129,13 +119,12 @@ if msgIn.MsgType=="event"{
 
 	//TODO 这里把回复的消息进行封装
 
-	msgOut := models.MsgPlain{
+	msgOut := models.MsgPlain1{
 		ToUserName:msgIn.FromUserName,
 		FromUserName:msgIn.ToUserName,
 		CreateTime:time.Now().Unix(),
 		MsgType:"text",
 		Content:msgback,
-		AgentID:msgIn.AgentID,
 
 	}
 
@@ -145,48 +134,28 @@ if msgIn.MsgType=="event"{
 	}
 
 	Lg("this is the core xml:"+ string(xmlData))
-	encryptedxml,err := gutils.AesEncrypt(string(xmlData),[]byte(newkey))
+	msg_encrypt,err := gutils.AesEncrypt(string(xmlData),newkey)
 	if err != nil {
 		Lg(err)
 	}
 
+	timestamp := time.Now().Unix()
+	nonce :=fmt.Sprintf("%d",timestamp)
+	sign := gutils.MsgSign(token,nonce,nonce,msg_encrypt)
 
-	test,_ := gutils.AesEncrypt1([]byte(encryptedxml),[]byte(newkey))
-	Lg("this is the encrypt part:",string(test))
-
-
-	buf := new(bytes.Buffer)
-	err = binary.Write(buf, binary.BigEndian, int32(len(encryptedxml)))
-	if err != nil {
-		fmt.Println("Binary write err:", err)
-	}
-	bodyLength := buf.Bytes()
-
-	// Encrypt part1: Random bytes
-
-	randomBytes := []byte("abcdefghijklmnop")
+	sendOut.Encrypt = msg_encrypt
+	sendOut.TimeStamp = timestamp
+	sendOut.Nonce =nonce
+	sendOut.MsgSignature = sign
 
 
-	sendOut.Timestamp = string("1460053494")
-	sendOut.Encrypt =string(encryptedxml)
-	sendOut.Nonce = "1460053494"
-
-
-	id,_ := gutils.GetID()
-	plainData := bytes.Join([][]byte{randomBytes, bodyLength, []byte(encryptedxml), []byte(id)}, nil)
-	cipherData, err := gutils.AesEncrypt(string(plainData), []byte(newkey))
-	if err != nil {
-		errors.New("aesEncrypt error")
-	}
-	msg_encrypy :=base64.StdEncoding.EncodeToString([]byte(cipherData))
-	sendOut.MsgSignature = gutils.SendMsgSignature(token,sendOut.Timestamp,sendOut.Nonce,msg_encrypy)
 
 	xmlData1 ,err := sendOut.ToXml()
 	if err != nil {
 		c.Abort("500")
 	}
 
-	Lg(string(xmlData1))
+	Lg("this is what we feedback:\n",string(xmlData1))
 	c.Ctx.WriteString(string(xmlData1))
 }
 

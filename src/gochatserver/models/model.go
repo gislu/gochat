@@ -18,6 +18,24 @@ type MsgPlain struct {
 	Content string `xml:"Content"`
 }
 
+type MsgPlain1 struct {
+	XMLName xml.Name `xml:"xml"`
+	ToUserName string `xml:"ToUserName"`
+	FromUserName string `xml:"FromUserName"`
+	CreateTime int64 `xml:"CreateTime"`
+	MsgType string `xml:"MsgType"`
+	Content string `xml:"Content"`
+}
+
+
+type SendDecryptDate struct {
+	XMLName xml.Name `xml:"xml"`
+	Encrypt string `xml:"Encrypt"`
+	MsgSignature string `xml:"MsgSignature"`
+	TimeStamp int64 `xml:"TimeStamp"`
+	Nonce string `xml:"Nonce"`
+}
+
 type MsgEvent struct {
 	ToUserName string `xml:"ToUserName"`
 	FromUserName string `xml:"FromUserName"`
@@ -51,13 +69,7 @@ type DecryptDate struct {
 
 }
 
-type SendDecryptDate struct {
-	XMLName xml.Name `xml:"xml"`
-	Encrypt string `xml:"Encrypt"`
-	MsgSignature string `xml:"MsgSignature"`
-	Nonce string `xml:"Nonce"`
-	Timestamp string `xml:"TimeStamp"`
-}
+
 type Meta struct {
 	Category string `json:"category"`
 	Catelog string  `json:"catelog"`

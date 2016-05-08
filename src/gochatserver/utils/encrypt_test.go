@@ -2,7 +2,7 @@ package utils
 
 import (
 	"testing"
-	"reflect"
+	"time"
 )
 	const (
 
@@ -24,15 +24,17 @@ func Test_Base64(t *testing.T){
 
 func Test_Aes(t*testing.T){
 	testmaterial :="this is a test balabalabala"
-		rs,err:=	AesEncrypt(testmaterial,[]byte(Base64Dncode(key)))
+		rs,err:=	AesEncrypt(testmaterial,Base64Dncode(key))
 		if err != nil{
 			t.Error(err)
 		}
-		rs1 ,err :=AesDecrypt(rs,[]byte(Base64Dncode(key)))
-
+		rs1 ,err :=TestDecrypt(rs,Base64Dncode(key))
+	if err  !=nil{
+		t.Error(err)
+	}
 		t.Log(string(rs1))
 
-		t.Log(reflect.DeepEqual(rs1,[]byte(testmaterial)))
+	t.Log(time.Now().Unix())
 
 
 }

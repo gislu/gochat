@@ -13,6 +13,7 @@ import(
 	"encoding/binary"
 	"crypto/rand"
 	"errors"
+	"encoding/hex"
 )
 
 
@@ -37,51 +38,37 @@ func SendMsgSignature(token,timestamp, nonce, msg_encrypt string) string {
 	return fmt.Sprintf("%x", s.Sum(nil))
 }
 
+func AesEncrypt(text ,key string) (string, error) {
+	message := []byte(text)
 
-func AesEncrypt(encodeStr string, key []byte) (string, error) {
-	encodeBytes := []byte(encodeStr)
-	block, err := aes.NewCipher(key)
-	if err != err {
+	buf := new(bytes.Buffer)
+	if err := binary.Write(buf, binary.BigEndian, int32(len(message))); err != nil {
 		return "", err
 	}
-	blockSize := block.BlockSize()
-	fmt.Println("the size is :",blockSize)
-	encodeBytes = PKCS5Padding(encodeBytes, blockSize)
-	blockMode := cipher.NewCBCEncrypter(block, key[:blockSize])
-	crypted := make([]byte, len(encodeBytes))
-	blockMode.CryptBlocks(crypted, encodeBytes)
 
-	return base64.StdEncoding.EncodeToString(crypted), nil
-}
+	msgLen := buf.Bytes()
 
-func AesDecrypt(decodeStr string, key []byte) ([]byte, error) {
-	decodeBytes, err := base64.StdEncoding.DecodeString(decodeStr)
-	if err != nil {
-		return nil, err
+	randBytes := make([]byte, 16)
+	if _, err := io.ReadFull(rand.Reader, randBytes); err != nil {
+		return "", err
 	}
-	block, err := aes.NewCipher(key)
+	id,_ :=GetID()
+	messageBytes := bytes.Join([][]byte{randBytes, msgLen, message, []byte(id)}, nil)
+
+	encoded := PKCS7Encode(messageBytes)
+
+	c, err := aes.NewCipher([]byte(key))
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	blockSize := block.BlockSize()
-	blockMode := cipher.NewCBCDecrypter(block, key[:blockSize])
-	origData := make([]byte, len(decodeBytes))
-	blockMode.CryptBlocks(origData, decodeBytes)
-	origData = PKCS5UnPadding(origData)
-	return origData, nil
+	iv := []byte(key)[:16]
+
+	cbc := cipher.NewCBCEncrypter(c, iv)
+	cbc.CryptBlocks(encoded, encoded)
+
+	return base64.StdEncoding.EncodeToString(encoded), nil
 }
 
-func PKCS5Padding(ciphertext []byte, blockSize int) []byte {
-	padding := blockSize - len(ciphertext)%blockSize
-	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
-	return append(ciphertext, padtext...)
-}
-
-func PKCS5UnPadding(origData []byte) []byte {
-	length := len(origData)
-	unpadding := int(origData[length-1])
-	return origData[:(length - unpadding)]
-}
 
 func Deallength(input []byte)([]byte,error){
 	buf := bytes.NewBuffer(input[16:20])
@@ -91,7 +78,9 @@ func Deallength(input []byte)([]byte,error){
 
 }
 
-func NormalDecrypt(cipherData []byte, aesKey []byte) ([]byte, error) {
+func NormalDecrypt(cipherData1 string, aesKey1 string) ([]byte, error) {
+	aesKey := []byte(aesKey1)
+	cipherData := []byte(cipherData1)
 	k := len(aesKey) //PKCS#7
 	if len(cipherData) % k != 0 {
 		return nil, errors.New("crypto/cipher: ciphertext size is not multiple of aes key length")
@@ -113,25 +102,44 @@ func NormalDecrypt(cipherData []byte, aesKey []byte) ([]byte, error) {
 	return plainData, nil
 }
 
-func AesEncrypt1(plainData []byte, aesKey []byte) ([]byte, error) {
-	k := len(aesKey)
-	if len(plainData)%k != 0 {
-		plainData = PKCS5Padding(plainData, k)
-	}
+func TestDecrypt(text,key string) ([]byte, error) {
+	var msgDecrypt []byte
 
-	block, err := aes.NewCipher(aesKey)
+	deciphered, err := base64.StdEncoding.DecodeString(text)
 	if err != nil {
 		return nil, err
 	}
 
-	iv := make([]byte, aes.BlockSize)
-	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
-		return nil, err
+	c, err := aes.NewCipher([]byte(key))
+	if err != nil {
+		return nil,err
 	}
+	iv := []byte(key)[:16]
+	cbc := cipher.NewCBCDecrypter(c, iv)
+	cbc.CryptBlocks(deciphered, deciphered)
 
-	cipherData := make([]byte, len(plainData))
-	blockMode := cipher.NewCBCEncrypter(block, iv)
-	blockMode.CryptBlocks(cipherData, plainData)
+	decoded := PKCS7Decode(deciphered)
 
-	return cipherData, nil
+	buf := bytes.NewBuffer(decoded[16:20])
+
+	var msgLen int32
+	binary.Read(buf, binary.BigEndian, &msgLen)
+
+	msgDecrypt = decoded[20 : 20+msgLen]
+	return msgDecrypt, nil
+}
+
+func MsgSign(token, timestamp, nonce, encryptedMsg string) (signature string) {
+	strs := sort.StringSlice{token, timestamp, nonce, encryptedMsg}
+	strs.Sort()
+
+	buf := make([]byte, 0, len(token)+len(timestamp)+len(nonce)+len(encryptedMsg))
+
+	buf = append(buf, strs[0]...)
+	buf = append(buf, strs[1]...)
+	buf = append(buf, strs[2]...)
+	buf = append(buf, strs[3]...)
+
+	hashsum := sha1.Sum(buf)
+	return hex.EncodeToString(hashsum[:])
 }

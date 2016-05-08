@@ -9,6 +9,11 @@ func (this *MsgPlain)ToXml() ( []byte , error ) {
 	return getXmlData(this)
 }
 
+func (this *MsgPlain1)ToXml() ( []byte , error ) {
+	return getXmlData(this)
+}
+
+
 func (this *SendDecryptDate)ToXml() ( []byte , error ) {
 	return getXmlData(this)
 }
@@ -30,6 +35,7 @@ func getXmlData(object interface{})( []byte , error ){
 	if err != nil {
 		return nil ,err
 	}
-	xmlStr := fmt.Sprintf("%s%s",xml.Header,string(data))
+	//xmlStr := fmt.Sprintf("%s%s",xml.Header,string(data))
+	xmlStr := fmt.Sprintf("%s",string(data))
 	return []byte(xmlStr) , nil
 }
