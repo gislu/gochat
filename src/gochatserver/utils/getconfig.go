@@ -89,6 +89,19 @@ func GetID()(corp string,secret string){
 
 }
 
+func ReadToken()string{
+	configmsg :=GetYamlConfig("./conf/id_relative.yaml")
+	token := GetElement("token",configmsg)
+	return token
+}
+
+func ReadAesKey()string{
+	configmsg :=GetYamlConfig("./conf/id_relative.yaml")
+	token := GetElement("key",configmsg)
+	return token
+}
+
+
 func GetToken()string{
 	corp,secret :=GetID()
 	resp,err :=http.Get("https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid="+corp+"&corpsecret="+secret)
