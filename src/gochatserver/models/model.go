@@ -8,6 +8,12 @@ type Signature struct {
 	Echostr string `form:"echostr"`
 }
 
+type Enrollinfo struct {
+	Name string `form:"name"`
+	Email string `form:"email"`
+	Phone int `form:"phone"`
+
+}
 type MsgPlain struct {
 	XMLName xml.Name `xml:"xml"`
 	ToUserName string `xml:"ToUserName"`
@@ -82,4 +88,15 @@ type Entry struct {
 type Token struct {
 	AccessToken string `json:"access_token"`
 	Expires string `json:"expires_in"`
+}
+
+type PushMsg struct {
+	ToUser  string         `json:"touser"`
+	MsgType string         `json:"msgtype"`
+	AgentID int   	`json:"agentid"`
+	Text    TextMsgContent `json:"text"`
+}
+
+type TextMsgContent struct {
+	Content string `json:"content"`
 }

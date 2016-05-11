@@ -161,6 +161,8 @@ if msgIn.MsgType=="event"{
 	}
 
 	Lg("this is what we feedback:\n",string(xmlData1))
+
+
 	c.Ctx.WriteString(string(xmlData1))
 }
 
