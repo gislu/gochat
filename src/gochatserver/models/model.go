@@ -11,7 +11,7 @@ type Signature struct {
 type Enrollinfo struct {
 	Name string `form:"name"`
 	Email string `form:"email"`
-	Phone int `form:"phone"`
+	Phone string `form:"phone"`
 
 }
 type MsgPlain struct {

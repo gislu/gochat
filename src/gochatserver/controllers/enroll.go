@@ -21,11 +21,11 @@ func (c * EnrollController) Get(){
 	}
 	pushurl := "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token="+gutils.GetToken()
 
-	context := "用户姓名："+ info.Name +"\n用户手机："+info.Phone+"\n用户邮箱"+info.Email
+	context := "用户姓名："+ info.Name +"\n用户手机："+info.Phone+"\n用户邮箱："+info.Email
 	psMsg := &models.PushMsg{
 		ToUser:  "@all",
 		MsgType: "text",
-		AgentID: "4",
+		AgentID: 3,
 		Text:  models.TextMsgContent{Content: context},
 	}
 	body, err := json.MarshalIndent(psMsg, " ", "  ")
@@ -37,7 +37,7 @@ func (c * EnrollController) Get(){
 		Lg(err)
 		c.Ctx.WriteString(fmt.Sprintf("%v",err))
 	}
-
+	c.Ctx.WriteString("信息提交成功！")
 }
 
 

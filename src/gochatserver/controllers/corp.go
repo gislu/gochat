@@ -118,10 +118,25 @@ if msgIn.MsgType=="event"{
 
 }else if msgIn.MsgType=="text"{
 
-	fmt.Println("发来的是文字类信息，发送的内容是:"+msgIn.Content)
-
-	msgback := "在这里写好回复给微信的内容,可以自己写函数单门处理业务内容"
-
+	msgback  :="已接单，业务联系人:"+msgIn.FromUserName
+	//fmt.Println("发来的是文字类信息，发送的内容是:"+msgIn.Content)
+//	pushurl := "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token="+gutils.GetToken()
+//	context := msgback
+//	psMsg := &models.PushMsg{
+//		ToUser:  "@all",
+//		MsgType: "text",
+//		AgentID: 3,
+//		Text:  models.TextMsgContent{Content: context},
+//	}
+//	body, err := json.MarshalIndent(psMsg, " ", "  ")
+//	if err != nil {
+//		Lg(err)
+//	}
+//	_,err =http.Post(pushurl,"application/json",bytes.NewReader(body))
+//	if err != nil {
+//		Lg(err)
+//		c.Ctx.WriteString(fmt.Sprintf("%v",err))
+//	}
 	//TODO 这里把回复的消息进行封装
 
 	msgOut := models.MsgPlain1{
@@ -159,8 +174,6 @@ if msgIn.MsgType=="event"{
 	if err != nil {
 		c.Abort("500")
 	}
-
-	Lg("this is what we feedback:\n",string(xmlData1))
 
 
 	c.Ctx.WriteString(string(xmlData1))
