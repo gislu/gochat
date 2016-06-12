@@ -8,6 +8,13 @@ type Signature struct {
 	Echostr string `form:"echostr"`
 }
 
+type Signature1 struct {
+	Msg_signature string `form:"msg_signature"`
+	Timestamp string `form:"timestamp"`
+	Nonce string `form:"nonce"`
+	Echostr string `form:"echostr"`
+}
+
 type Enrollinfo struct {
 	Name string `form:"name"`
 	Email string `form:"email"`
