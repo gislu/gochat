@@ -20,5 +20,4 @@ _cgo_export.*
 _testmain.go
 .idea
 *.yaml
-*.html
 *.iml

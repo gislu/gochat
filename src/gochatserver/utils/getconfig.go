@@ -80,7 +80,7 @@ func GetElement(key string,themap map[interface{}]interface{})string {
 	Log("can't find the config file",beego.LevelWarning)
 	return ""
 }
-
+//get corpid
 func GetID()(corp string,secret string){
 	configmsg :=GetYamlConfig("./conf/id_relative.yaml")
 	corp =GetElement("corpid",configmsg)
@@ -94,7 +94,7 @@ func ReadToken()string{
 	token := GetElement("token",configmsg)
 	return token
 }
-
+//get aeskey
 func ReadAesKey()string{
 	configmsg :=GetYamlConfig("./conf/id_relative.yaml")
 	token := GetElement("key",configmsg)
