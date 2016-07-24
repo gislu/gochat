@@ -26,6 +26,16 @@ type PubTextMsg struct {
 	Content string `xml:"Content"`
 }
 
+
+type PubTextOut struct {
+	XMLName xml.Name `xml:"xml"`
+	ToUserName string `xml:"ToUserName"`
+	FromUserName string `xml:"FromUserName"`
+	CreateTime int64 `xml:"CreateTime"`
+	MsgType string `xml:"MsgType"`
+	Content string `xml:"Content"`
+}
+
 type MsgPlain struct {
 	XMLName xml.Name `xml:"xml"`
 	ToUserName string `xml:"ToUserName"`

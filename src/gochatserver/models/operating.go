@@ -18,8 +18,8 @@ func (this *SendDecryptDate)ToXml() ( []byte , error ) {
 	return getXmlData(this)
 }
 
-func (this *Entry)ToJson() ( []byte , error ){
-	return getJsonData(this)
+func (this *PubTextOut)ToXml() ( []byte , error ) {
+	return getXmlData(this)
 }
 
 func getJsonData(object interface{}) ( []byte , error ) {
