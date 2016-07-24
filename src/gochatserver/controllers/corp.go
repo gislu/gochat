@@ -33,9 +33,8 @@ func (c * CorpController) Get() {
 		c.Abort("400")
 	}
 
-	//de64 := gutils.Base64Dncode(signature.Echostr)
+
 	newkey := gutils.Base64Dncode(key)
-	//rand_msg,err := gutils.NormalDecrypt(de64,newkey)
 	rand_msg,err := gutils.TestDecrypt(string(signature.Echostr),newkey)
 	if err != nil {
 		Lg(err)
@@ -119,24 +118,7 @@ if msgIn.MsgType=="event"{
 }else if msgIn.MsgType=="text"{
 
 	msgback  :="已接单，业务联系人:"+msgIn.FromUserName
-	//fmt.Println("发来的是文字类信息，发送的内容是:"+msgIn.Content)
-//	pushurl := "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token="+gutils.GetToken()
-//	context := msgback
-//	psMsg := &models.PushMsg{
-//		ToUser:  "@all",
-//		MsgType: "text",
-//		AgentID: 3,
-//		Text:  models.TextMsgContent{Content: context},
-//	}
-//	body, err := json.MarshalIndent(psMsg, " ", "  ")
-//	if err != nil {
-//		Lg(err)
-//	}
-//	_,err =http.Post(pushurl,"application/json",bytes.NewReader(body))
-//	if err != nil {
-//		Lg(err)
-//		c.Ctx.WriteString(fmt.Sprintf("%v",err))
-//	}
+
 	//TODO 这里把回复的消息进行封装
 
 	msgOut := models.MsgPlain1{
