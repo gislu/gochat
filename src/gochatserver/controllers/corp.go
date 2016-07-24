@@ -35,7 +35,7 @@ func (c * CorpController) Get() {
 
 
 	newkey := gutils.Base64Dncode(key)
-	rand_msg,err := gutils.TestDecrypt(string(signature.Echostr),newkey)
+	rand_msg,err := gutils.AesDecrypt(string(signature.Echostr),newkey)
 	if err != nil {
 		Lg(err)
 	}
@@ -67,7 +67,7 @@ func (c * CorpController) Post() {
 	//Lg(de64)
 	//de64 :=gutils.Base64Dncode(msgDecrypt.Encrypt)
 	newkey := gutils.Base64Dncode(key)
-	rand_msg,err := gutils.TestDecrypt(string(msgDecrypt.Encrypt),newkey)
+	rand_msg,err := gutils.AesDecrypt(string(msgDecrypt.Encrypt),newkey)
 
 	if err != nil {
 		Lg(err)

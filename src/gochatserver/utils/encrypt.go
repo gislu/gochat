@@ -12,7 +12,6 @@ import(
 	"fmt"
 	"encoding/binary"
 	"crypto/rand"
-	"errors"
 	"encoding/hex"
 )
 
@@ -69,7 +68,7 @@ func AesEncrypt(text ,key string) (string, error) {
 	return base64.StdEncoding.EncodeToString(encoded), nil
 }
 
-func TestDecrypt(text,key string) ([]byte, error) {
+func AesDecrypt(text,key string) ([]byte, error) {
 	var msgDecrypt []byte
 
 	deciphered, err := base64.StdEncoding.DecodeString(text)
@@ -110,3 +109,4 @@ func MsgSign(token, timestamp, nonce, encryptedMsg string) (signature string) {
 	hashsum := sha1.Sum(buf)
 	return hex.EncodeToString(hashsum[:])
 }
+

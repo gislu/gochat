@@ -28,7 +28,7 @@ func Test_Aes(t*testing.T){
 		if err != nil{
 			t.Error(err)
 		}
-		rs1 ,err :=TestDecrypt(rs,Base64Dncode(key))
+		rs1 ,err := AesDecrypt(rs,Base64Dncode(key))
 	if err  !=nil{
 		t.Error(err)
 	}
