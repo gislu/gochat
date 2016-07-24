@@ -15,6 +15,17 @@ type Enrollinfo struct {
 	Phone string `form:"phone"`
 
 }
+
+type PubTextMsg struct {
+	XMLName xml.Name `xml:"xml"`
+	ToUserName string `xml:"ToUserName"`
+	FromUserName string `xml:"FromUserName"`
+	CreateTime int64 `xml:"CreateTime"`
+	MsgType string `xml:"MsgType"`
+	MsgId int `xml:"MsgId"`
+	Content string `xml:"Content"`
+}
+
 type MsgPlain struct {
 	XMLName xml.Name `xml:"xml"`
 	ToUserName string `xml:"ToUserName"`
@@ -56,7 +67,6 @@ type MsgEvent struct {
 
 
 
-
 type MsgCat struct {
 	XMLName xml.Name `xml:"xml"`
 	ToUserName string `xml:"ToUserName"`
@@ -76,16 +86,6 @@ type DecryptDate struct {
 
 }
 
-
-type Meta struct {
-	Category string `json:"category"`
-	Catelog string  `json:"catelog"`
-}
-
-type Entry struct {
-	Meta Meta `json:"meta"`
-	Content interface{} `json:"Content"`
-}
 type Token struct {
 	AccessToken string `json:"access_token"`
 	Expires string `json:"expires_in"`

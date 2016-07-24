@@ -2,7 +2,6 @@ package test
 import (
 	"testing"
 	"gochatserver/models"
-	"encoding/json"
 	"fmt"
 	"time"
 	"encoding/xml"
@@ -11,26 +10,16 @@ import (
 )
 
 func TestSerilizeMsgoutJson(t *testing.T) {
-	var meta1 models.Meta
-	meta1.Category = "message"
-	meta1.Catelog = "echo"
-
-	var meta2 models.Meta
-	meta2.Category="PLAIN"
-
-	var content models.Entry
-	content.Content = "测试数据"
-	content.Meta = meta2
-
-	var msgout models.Entry
-	msgout.Meta = meta1
-	msgout.Content = content
-
-	b , err := json.Marshal(msgout)
-	if err != nil {
-		t.Error("Seriaze Failed")
-	}
-	t.Log(string(b),"\n")
+//	var meta1 models.Meta
+//	meta1.Category = "message"
+//	meta1.Catelog = "echo"
+//
+//
+//	b , err := json.Marshal(msgout)
+//	if err != nil {
+//		t.Error("Seriaze Failed")
+//	}
+//	t.Log(string(b),"\n")
 }
 
 func TestSerilizeMsgoutXml(t *testing.T) {

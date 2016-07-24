@@ -54,7 +54,6 @@ func (c * CorpController) Post() {
 	var msgDecrypt models.DecryptDate
 	var msgIn models.MsgCat
 	var sendOut models.SendDecryptDate
-	//err := xml.Unmarshal(c.Ctx.Input.RequestBody,&msgIn)
 	err := xml.Unmarshal(c.Ctx.Input.RequestBody,&msgDecrypt)
 	if err != nil {
 		Lg(err)
@@ -100,8 +99,9 @@ if msgIn.MsgType=="event"{
 		MsgType:"text",
 		Content:fmt.Sprint(msgback),
 		AgentID:msgIn.AgentID,
-
 	}
+
+
 	xmlData ,err := msgOut.ToXml()
 	if err != nil {
 		c.Abort("500")

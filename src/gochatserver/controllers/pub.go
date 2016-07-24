@@ -4,6 +4,7 @@ import (
 	"github.com/astaxie/beego"
 	"gochatserver/models"
 	"fmt"
+	"encoding/xml"
 )
 
 type PubController struct  {
@@ -31,5 +32,16 @@ func (c * 	PubController) Get() {
 
 
 func (c * 	PubController) Post(){
+	var msgIn models.PubTextMsg
+	err := xml.Unmarshal(c.Ctx.Input.RequestBody,&msgIn)
+	if err != nil {
+		Lg(err)
+		c.Abort("400")
+		return
+	}
+
+
+
+
 
 }
