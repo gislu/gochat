@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"gochatserver/controllers"
+	"controllers"
 	"github.com/astaxie/beego"
 
 )

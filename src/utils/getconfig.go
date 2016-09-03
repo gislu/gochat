@@ -7,10 +7,19 @@ import (
 	"bytes"
 	"github.com/astaxie/beego"
 	"net/http"
-	"gochatserver/models"
+	"models"
 	"encoding/json"
 	"fmt"
 )
+
+type ConfigElement struct {
+	Config1 string
+	Config2 string
+	Config3 string
+	Feature1 string
+	Feature2 string
+	Feature3 string
+}
 
 
 func GetYamlConfig(path string) map[interface{}]interface{}{
