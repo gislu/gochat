@@ -33,7 +33,6 @@ func GetYamlConfig(path string) map[interface{}]interface{}{
 }
 
 func GetXMLConfig(path string) map[string]string {
-
 	var t xml.Token
 	var err error
 
@@ -58,10 +57,8 @@ func GetXMLConfig(path string) map[string]string {
 			i=i+1
 		case xml.CharData:
 			content1 := string([]byte(token))
-			//Valuelst=append(Valuelst,content1)
 			Valuelst[j]=content1
 			j=j+1
-
 		}
 	}
 	for count:=0;count<len(Keylst);count++{
@@ -81,11 +78,18 @@ func GetElement(key string,themap map[interface{}]interface{})string {
 	return ""
 }
 //get corpid
-func GetID()(corp string,secret string){
+func GetCorpId()(corp string,secret string){
 	configmsg :=GetYamlConfig("./conf/id_relative.yaml")
 	corp =GetElement("corpid",configmsg)
-	secret =GetElement("secret",configmsg)
+	secret =GetElement("corpsecret",configmsg)
 	return corp,secret
+}
+
+func GetPubId()(pubid string, pubsecret string){
+	configmsg :=GetYamlConfig("./conf/id_relative.yaml")
+	pubid =GetElement("pubid",configmsg)
+	pubsecret =GetElement("pubsecret",configmsg)
+	return pubid, pubsecret
 
 }
 
@@ -103,7 +107,7 @@ func ReadAesKey()string{
 
 
 func GetToken()string{
-	corp,secret :=GetID()
+	corp,secret := GetCorpId()
 	resp,err :=http.Get("https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid="+corp+"&corpsecret="+secret)
 	if err!=nil{
 		Log(err,beego.LevelWarning)

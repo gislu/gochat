@@ -62,9 +62,6 @@ func (c * CorpController) Post() {
 	}
 
 	//TODO: 微信那边发来的信息是经过AES加密后的BASE64编码，这里进行解密
-
-	//Lg(de64)
-	//de64 :=gutils.Base64Dncode(msgDecrypt.Encrypt)
 	newkey := gutils.Base64Dncode(key)
 	rand_msg,err := gutils.AesDecrypt(string(msgDecrypt.Encrypt),newkey)
 
@@ -78,7 +75,6 @@ func (c * CorpController) Post() {
 	if err1 != nil {
 		Lg(err1)
 	}
-//	Lg(msgIn.Content,msgIn.MsgType)
 
 //TODO 通过msgIn.MsgType 判断发送来消息的类型
 
@@ -117,7 +113,6 @@ if msgIn.MsgType=="event"{
 	msgback  :="已接单，业务联系人:"+msgIn.FromUserName
 
 	//TODO 这里把回复的消息进行封装
-
 	msgOut := models.MsgPlain1{
 		ToUserName:msgIn.FromUserName,
 		FromUserName:msgIn.ToUserName,
@@ -132,7 +127,6 @@ if msgIn.MsgType=="event"{
 		c.Abort("500")
 	}
 
-	//Lg("this is the core xml:"+ string(xmlData))
 	msg_encrypt,err := gutils.AesEncrypt(string(xmlData),newkey)
 	if err != nil {
 		Lg(err)

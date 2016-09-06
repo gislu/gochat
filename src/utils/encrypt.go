@@ -51,7 +51,7 @@ func AesEncrypt(text ,key string) (string, error) {
 	if _, err := io.ReadFull(rand.Reader, randBytes); err != nil {
 		return "", err
 	}
-	id,_ :=GetID()
+	id,_ := GetCorpId()
 	messageBytes := bytes.Join([][]byte{randBytes, msgLen, message, []byte(id)}, nil)
 
 	encoded := PKCS7Encode(messageBytes)

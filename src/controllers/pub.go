@@ -11,9 +11,6 @@ import (
 type PubController struct  {
 	beego.Controller
 }
-//这里填上在企业号回调模式中设置的AESkey
-
-
 
 
 //TODO 这里负责回调模式的验证
