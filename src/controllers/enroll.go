@@ -21,7 +21,7 @@ func (c * EnrollController) Get(){
 		Lg(err,beego.LevelNotice)
 		c.Abort("400")
 	}
-	pushurl := "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token="+gutils.GetToken()
+	pushurl := "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token="+gutils.GetCorpToken()
 
 	re1 :=info.City1
 	var valid = regexp.MustCompile("[0-9]+")

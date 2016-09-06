@@ -106,9 +106,22 @@ func ReadAesKey()string{
 }
 
 
-func GetToken()string{
+func GetCorpToken()string{
 	corp,secret := GetCorpId()
 	resp,err :=http.Get("https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid="+corp+"&corpsecret="+secret)
+	if err!=nil{
+		Log(err,beego.LevelWarning)
+	}
+	fetchtoken,err :=ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
+	var token models.Token
+	json.Unmarshal(fetchtoken,&token)
+	return token.AccessToken
+}
+
+func GetPubToken()string{
+	id,secret := GetPubId()
+	resp,err :=http.Get("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+id+"&secret="+secret)
 	if err!=nil{
 		Log(err,beego.LevelWarning)
 	}
