@@ -21,3 +21,4 @@ _testmain.go
 .idea
 *.yaml
 *.iml
+*.DS_Store
