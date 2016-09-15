@@ -2,13 +2,6 @@
 import (
 	"github.com/astaxie/beego"
 	"models"
-	"encoding/json"
-	"net/http"
-	"bytes"
-	"fmt"
-	"regexp"
-	gutils "utils"
-	"strconv"
 )
 
 type EnrollController struct  {

@@ -3,8 +3,7 @@ import (
 	"fmt"
 	"encoding/xml"
 	"encoding/json"
-	"time"
-	"github.com/astaxie/beego"
+
 )
 
 func (this *CorpEventBackMag)ToXml() ( []byte , error ) {
@@ -42,16 +41,3 @@ func getXmlData(object interface{})( []byte , error ){
 	return []byte(xmlStr) , nil
 }
 
-func PubSendBack(this * beego.Controller,backMsg string,msgIn PubTextMsg)error{
-	msgOut := PubTextOut{
-		ToUserName:msgIn.FromUserName,
-		FromUserName:msgIn.ToUserName,
-		CreateTime:time.Now().Unix(),
-		MsgType:"text",
-		Content:fmt.Sprint(backMsg),
-	}
-
-	xmlData ,err := msgOut.ToXml()
-	this.Ctx.WriteString(string(xmlData))
-	return err
-}
