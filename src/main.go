@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-	beego.SetStaticPath("/wrx", "static")  
+	beego.SetStaticPath("/gochat", "static")
 	beego.Run()
 }

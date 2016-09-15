@@ -5,7 +5,7 @@ import (
 	"models"
 	"fmt"
 	"encoding/xml"
-	"time"
+	//"time"
 )
 
 type PubController struct  {
@@ -41,20 +41,25 @@ func (c * PubController) Post(){
 	msgback := "这里是自动回复（O w O）"
 
 
-	msgOut := models.PubTextOut{
-		ToUserName:msgIn.FromUserName,
-		FromUserName:msgIn.ToUserName,
-		CreateTime:time.Now().Unix(),
-		MsgType:"text",
-		Content:fmt.Sprint(msgback),
-	}
+	//msgOut := models.PubTextOut{
+	//	ToUserName:msgIn.FromUserName,
+	//	FromUserName:msgIn.ToUserName,
+	//	CreateTime:time.Now().Unix(),
+	//	MsgType:"text",
+	//	Content:fmt.Sprint(msgback),
+	//}
+	//
+	//xmlData ,err := msgOut.ToXml()
+	//if err != nil {
+	//	c.Abort("500")
+	//}
+	//
+	//
+	//c.Ctx.WriteString(string(xmlData))
 
-	xmlData ,err := msgOut.ToXml()
-	if err != nil {
-		c.Abort("500")
-	}
-
-
-	c.Ctx.WriteString(string(xmlData))
-
+	models.PubSendBack(c,msgback,msgIn)
 }
+
+
+
+

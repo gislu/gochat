@@ -36,8 +36,8 @@ func GetXMLConfig(path string) map[string]string {
 	var t xml.Token
 	var err error
 
-	Keylst := make([]string,6)
-	Valuelst:=make([]string,6)
+	keyList := make([]string,6)
+	valueList :=make([]string,6)
 
 	map1:=make(map[string]string)
 	content, err := ioutil.ReadFile(path)
@@ -53,16 +53,16 @@ func GetXMLConfig(path string) map[string]string {
 		switch token := t.(type) {
 		case xml.StartElement:
 			name := token.Name.Local
-			Keylst[i]=string(name)
+			keyList[i]=string(name)
 			i=i+1
 		case xml.CharData:
 			content1 := string([]byte(token))
-			Valuelst[j]=content1
+			valueList[j]=content1
 			j=j+1
 		}
 	}
-	for count:=0;count<len(Keylst);count++{
-		map1[Keylst[count]]=Valuelst[count]
+	for count:=0;count<len(keyList);count++{
+		map1[keyList[count]]= valueList[count]
 	}
 
 	return map1
@@ -85,23 +85,23 @@ func GetCorpId()(corp string,secret string){
 	return corp,secret
 }
 
-func GetPubId()(pubid string, pubsecret string){
+func GetPubId()(pubId string, pubSecret string){
 	configmsg :=GetYamlConfig("./conf/id_relative.yaml")
-	pubid =GetElement("pubid",configmsg)
-	pubsecret =GetElement("pubsecret",configmsg)
-	return pubid, pubsecret
+	pubId =GetElement("pubid",configmsg)
+	pubSecret =GetElement("pubsecret",configmsg)
+	return pubId, pubSecret
 
 }
 
 func ReadToken()string{
-	configmsg :=GetYamlConfig("./conf/id_relative.yaml")
-	token := GetElement("token",configmsg)
+	configMsg :=GetYamlConfig("./conf/id_relative.yaml")
+	token := GetElement("token", configMsg)
 	return token
 }
 //get aeskey
 func ReadAesKey()string{
-	configmsg :=GetYamlConfig("./conf/id_relative.yaml")
-	token := GetElement("key",configmsg)
+	configMsg :=GetYamlConfig("./conf/id_relative.yaml")
+	token := GetElement("key", configMsg)
 	return token
 }
 
@@ -112,10 +112,10 @@ func GetCorpToken()string{
 	if err!=nil{
 		Log(err,beego.LevelWarning)
 	}
-	fetchtoken,err :=ioutil.ReadAll(resp.Body)
+	fetchToken,err :=ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	var token models.Token
-	json.Unmarshal(fetchtoken,&token)
+	json.Unmarshal(fetchToken,&token)
 	return token.AccessToken
 }
 
@@ -125,9 +125,9 @@ func GetPubToken()string{
 	if err!=nil{
 		Log(err,beego.LevelWarning)
 	}
-	fetchtoken,err :=ioutil.ReadAll(resp.Body)
+	fetchToken,err :=ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	var token models.Token
-	json.Unmarshal(fetchtoken,&token)
+	json.Unmarshal(fetchToken,&token)
 	return token.AccessToken
 }

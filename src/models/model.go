@@ -9,22 +9,12 @@ type Signature struct {
 }
 
 
+
 type Enrollinfo struct {
 	Name string `form:"name"`
 	Sex string `form:"sex"`
-	Age string `form:"age"`
-	Love string `form:"love"`
-	Num string `form:"num"`
-	City1 string `form:"city1"`
-	City2 string `form:"city2"`
-	City3 string `form:"city3"`
-	City4 string `form:"city4"`
-	City5 string `form:"city5"`
-	Intime string `form:"intime"`
-	Outtime string `form:"outtime"`
-	Car string `form:"car"`
 	Email string `form:"email"`
-	Phone string `form:"phone"`
+	Wechat string `form:"wechat"`
 
 }
 
@@ -48,7 +38,7 @@ type PubTextOut struct {
 	Content string `xml:"Content"`
 }
 
-type MsgPlain struct {
+type CorpEventBackMag struct {
 	XMLName xml.Name `xml:"xml"`
 	ToUserName string `xml:"ToUserName"`
 	FromUserName string `xml:"FromUserName"`
@@ -58,7 +48,7 @@ type MsgPlain struct {
 	Content string `xml:"Content"`
 }
 
-type MsgPlain1 struct {
+type CorpTextBackMsg struct {
 	XMLName xml.Name `xml:"xml"`
 	ToUserName string `xml:"ToUserName"`
 	FromUserName string `xml:"FromUserName"`
