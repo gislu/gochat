@@ -38,14 +38,16 @@ func (c * PubController) Post(){
 		c.Abort("400")
 		return
 	}
+	if(msgIn.MsgType == "event"){
+		msgback := "感谢您的关注(O w O)～～这里是gochat框架机器人"
+		_ = c.PubSendBack(msgback,msgIn)
+
+	}
 
 	msgback := "这里是自动回复（O w O）"
 
-	
-	sendErr := c.PubSendBack(msgback,msgIn)
-	if(err != nil){
-		Lg(sendErr)
-	}
+
+	_ = c.PubSendBack(msgback,msgIn)
 
 }
 
