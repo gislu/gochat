@@ -1,6 +1,6 @@
 corpid: your-corp-id
 corpsecret: your-corp-secret
-pubcorpid: your-pub-id
+pubid: your-pub-id
 pubsecret: your-pub-secret
 token: your-token
 key: your-encrypy-key
