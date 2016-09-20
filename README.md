@@ -1,2 +1,3 @@
 # GoChat
-A strong WeChat Official Account server writed by Go.
+A open-source WeChat Official Account server framework 
+
