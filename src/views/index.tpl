@@ -75,9 +75,9 @@
 
 <body>
   <header>
-    <h1 class="logo">扫你妹啊</h1>
+    <h1 class="logo">sample of gochat</h1>
     <div class="description">
-      老子自己拿golang写的服务器,也没开数据库,你天天拿个脚本扫个毛线的后台啊?
+      使用gochat制作的一个公共号模版
     </div>
   </header>
   <footer>
