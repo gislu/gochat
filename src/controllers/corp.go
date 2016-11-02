@@ -23,7 +23,7 @@ type CorpController struct  {
 
 
 
-//这里负责回调模式的验证
+//TODO 这里负责回调模式的验证
 func (c * CorpController) Get() {
 	key :=gutils.ReadAesKey()
 	//token := gutils.ReadToken()
@@ -50,7 +50,7 @@ func (c * CorpController) Post() {
 
 	key :=gutils.ReadAesKey()
 	token := gutils.ReadToken()
-	//这里接受微信那边发送来的信息并解析
+	//TODO: 这里接受微信那边发送来的信息并解析
 	var msgDecrypt models.DecryptDate
 	var msgIn models.MsgCat
 	var sendOut models.SendDecryptDate
@@ -61,7 +61,7 @@ func (c * CorpController) Post() {
 		return
 	}
 
-	//微信那边发来的信息是经过AES加密后的BASE64编码，这里进行解密
+	//TODO: 微信那边发来的信息是经过AES加密后的BASE64编码，这里进行解密
 	newkey := gutils.Base64Dncode(key)
 	rand_msg,err := gutils.AesDecrypt(string(msgDecrypt.Encrypt),newkey)
 
@@ -85,7 +85,7 @@ if msgIn.MsgType=="event"{
 	msgback := "在这里写好回复给微信的内容,可以自己写函数单门处理业务内容"
 
 	//TODO 这里把回复的消息进行封装
-	msgOut := models.CorpEventBackMag{
+	msgOut := models.MsgPlain{
 		ToUserName:msgIn.FromUserName,
 		FromUserName:msgIn.ToUserName,
 		CreateTime:time.Now().Unix(),
@@ -112,8 +112,8 @@ if msgIn.MsgType=="event"{
 
 	msgback  :="已接单，业务联系人:"+msgIn.FromUserName
 
-	//这里把回复的消息进行封装
-	msgOut := models.CorpTextBackMsg{
+	//TODO 这里把回复的消息进行封装
+	msgOut := models.MsgPlain1{
 		ToUserName:msgIn.FromUserName,
 		FromUserName:msgIn.ToUserName,
 		CreateTime:time.Now().Unix(),
@@ -132,12 +132,12 @@ if msgIn.MsgType=="event"{
 		Lg(err)
 	}
 
-	timeStamp := time.Now().Unix()
-	nonce :=fmt.Sprintf("%d", timeStamp)
+	timestamp := time.Now().Unix()
+	nonce :=fmt.Sprintf("%d",timestamp)
 	sign := gutils.MsgSign(token,nonce,nonce,msg_encrypt)
 
 	sendOut.Encrypt = msg_encrypt
-	sendOut.TimeStamp = timeStamp
+	sendOut.TimeStamp = timestamp
 	sendOut.Nonce =nonce
 	sendOut.MsgSignature = sign
 

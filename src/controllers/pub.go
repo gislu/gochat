@@ -182,7 +182,6 @@ func (c * PubController) Post(){
 				c.Abort("500")
 			}
 
-
 			c.Ctx.WriteString(string(xmlData))
 
 		}else if(strings.HasPrefix(msgIn.Content,"查询") == true){
@@ -258,4 +257,3 @@ func (c * PubController) Post(){
 	}
 
 }
-

@@ -75,9 +75,9 @@
 
 <body>
   <header>
-    <h1 class="logo">GoChat</h1>
+    <h1 class="logo">扫你妹啊</h1>
     <div class="description">
-      GoChat 是一个基于beego的微信公共号服务器框架
+      老子自己拿golang写的服务器,也没开数据库,你天天拿个脚本扫个毛线的后台啊?
     </div>
   </header>
   <footer>

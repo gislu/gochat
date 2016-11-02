@@ -9,7 +9,6 @@ type Signature struct {
 }
 
 
-
 type Enrollinfo struct {
 	Name string `form:"name"`
 	Sex string `form:"sex"`
@@ -26,6 +25,7 @@ type PubTextMsg struct {
 	MsgType string `xml:"MsgType"`
 	MsgId int `xml:"MsgId"`
 	Content string `xml:"Content"`
+	Event string `xml:"Event"`
 }
 
 
@@ -38,7 +38,7 @@ type PubTextOut struct {
 	Content string `xml:"Content"`
 }
 
-type CorpEventBackMag struct {
+type MsgPlain struct {
 	XMLName xml.Name `xml:"xml"`
 	ToUserName string `xml:"ToUserName"`
 	FromUserName string `xml:"FromUserName"`
@@ -48,7 +48,7 @@ type CorpEventBackMag struct {
 	Content string `xml:"Content"`
 }
 
-type CorpTextBackMsg struct {
+type MsgPlain1 struct {
 	XMLName xml.Name `xml:"xml"`
 	ToUserName string `xml:"ToUserName"`
 	FromUserName string `xml:"FromUserName"`
@@ -112,4 +112,15 @@ type PushMsg struct {
 
 type TextMsgContent struct {
 	Content string `json:"content"`
+}
+
+type TranResult struct {
+	ErrorCode string `json:"error_code"`
+	Translation [1]RsforTrans `json:"trans_result"`
+}
+
+type RsforTrans struct{
+	Src string `json:"src"`
+	Dst string `json:"dst"`
+
 }

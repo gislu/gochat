@@ -3,14 +3,13 @@ import (
 	"fmt"
 	"encoding/xml"
 	"encoding/json"
-
 )
 
-func (this *CorpEventBackMag)ToXml() ( []byte , error ) {
+func (this *MsgPlain)ToXml() ( []byte , error ) {
 	return getXmlData(this)
 }
 
-func (this *CorpTextBackMsg)ToXml() ( []byte , error ) {
+func (this *MsgPlain1)ToXml() ( []byte , error ) {
 	return getXmlData(this)
 }
 
@@ -40,4 +39,3 @@ func getXmlData(object interface{})( []byte , error ){
 	xmlStr := fmt.Sprintf("%s",string(data))
 	return []byte(xmlStr) , nil
 }
-
