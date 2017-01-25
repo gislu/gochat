@@ -13,7 +13,7 @@ VERSION = "1.5"
 企业号：请把配置文件中的torpid 、corpsecret 、 key 、token 一栏换成自己企业号对应的CorpID 、 Secret 、企业号应用的AesKey 、以及对应应用开发者配置中的token
 
 ###运行应用
-进入项目根目录，直接运行编译项目即可
+进入项目根目录，直接运行事先编译好的项目即可
 ```
 $nohup ./gochat &
 ```
